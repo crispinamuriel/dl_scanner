@@ -1,5 +1,7 @@
 # Driver's License Scanner Project
 
+[View the live deployed project here.](https://crispina.pythonanywhere.com/)
+
 This project is a web application designed to scan and extract information from driver's licenses using a camera. The extracted data includes the full name, address, issuance date, and expiration date from the driver's license image. The architecture involves a Flask backend server and an HTML front-end interface.
 
 ## Project Architecture
