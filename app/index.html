@@ -90,6 +90,16 @@
                 <p>DL Issuance Date: ${data.issuance_date}</p>
                 <p>DL Expiration Date: ${data.expiration_date}</p>
             `;
+        if (
+          !data.full_name ||
+          !data.address ||
+          !data.issuance_date ||
+          !data.expiration_date
+        ) {
+          alert(
+            'Some of the fields could not be read.\nPlease click OK and try again.'
+          );
+        }
       }
     </script>
   </body>
