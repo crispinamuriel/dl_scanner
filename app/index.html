@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver's License Scanner</title>
+    <style>
+      h1 {
+        display: block;
+        text-align: center;
+      }
+
+      #video {
+        width: 100%;
+        max-width: 640px;
+        margin: 0 auto;
+        display: block;
+      }
+      #canvas {
+        display: none;
+      }
+      #captureButton {
+        margin-top: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #output {
+        display: block;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="header">Driver's License Scanner</h1>
+    <video id="video" playsinline autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <button id="captureButton">Capture Image</button>
+    <div id="output"></div>
+
+    <script>
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const captureButton = document.getElementById('captureButton');
+      const outputDiv = document.getElementById('output');
+
+      // Access the device camera and stream the video to the video element
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (stream) {
+          video.srcObject = stream;
+        })
+        .catch(function (err) {
+          console.error('Error accessing the camera:', err);
+        });
+
+      // Capture image from video stream
+      captureButton.addEventListener('click', function () {
+        canvas
+          .getContext('2d')
+          .drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const image = canvas.toDataURL('image/png'); // Convert canvas to base64 image data
+        sendImage(image);
+      });
+
+      // Send the captured image to the backend
+      async function sendImage(imageData) {
+        try {
+          const formData = new FormData();
+          const blob = await fetch(imageData).then((r) => r.blob());
+          formData.append('image', blob); // Append the image blob to FormData
+
+          const response = await fetch('http://127.0.0.1:5000/extract', {
+            method: 'POST',
+            body: formData, // Send FormData instead of JSON
+          });
+          const data = await response.json();
+          displayExtractedData(data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+
+      // Display the extracted data
+      function displayExtractedData({ data }) {
+        outputDiv.innerHTML = `
+                <p>Full Name: ${data.full_name}</p>
+                <p>Address: ${data.address}</p>
+                <p>DL Issuance Date: ${data.issuance_date}</p>
+                <p>DL Expiration Date: ${data.expiration_date}</p>
+            `;
+      }
+    </script>
+  </body>
+</html>
