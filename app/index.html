@@ -73,7 +73,8 @@
 
           const response = await fetch('http://127.0.0.1:5000/extract', {
             method: 'POST',
-            body: formData, // Send FormData instead of JSON
+            body: formData, // Send FormData instead of JSON,
+            mode: 'no-cors',
           });
           const data = await response.json();
           displayExtractedData(data);
