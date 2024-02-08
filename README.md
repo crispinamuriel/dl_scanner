@@ -1,5 +1,7 @@
 # Driver's License Scanner Project
 
+[View the live deployed project here.](https://crispina.pythonanywhere.com/)
+
 This project is a web application designed to scan and extract information from driver's licenses using a camera. The extracted data includes the full name, address, issuance date, and expiration date from the driver's license image. The architecture involves a Flask backend server and an HTML front-end interface.
 
 ## Project Architecture
@@ -31,9 +33,10 @@ The project consists of two main components:
 During development, some obstacles and assumptions were encountered:
 
 - **Error Handling:** Error handling is implemented to handle cases such as no image uploaded, no image selected, and general exceptions during image processing.
-- **Image Preprocessing:** Image preprocessing techniques such as resizing and enhancing could be added to improve OCR accuracy.
+- **Image Preprocessing:** An image preprocessing technique such as resizing has been added to improve OCR accuracy.
 - **CORS:** Cross-Origin Resource Sharing (CORS) is enabled to allow communication between the frontend and backend, assuming they are hosted on different domains.
 - **Camera Access:** The project assumes that the device has a camera accessible via the `navigator.mediaDevices.getUserMedia` API in the browser.
+- **Camera and Picture Quality:** The backend assumes that the camera and user ability to take a steady picture of their ID is optimal. Meaning the picutre is well lit and the user did not shake at all when taking the picture. This is relying on many factors that are outside of the ability of the program to extract correct data. An obstacle here is that if the data is not readable the API returns null values.
 - **License:** The project uses open-source libraries and does not impose any specific license restrictions. However, it's essential to check the licenses of dependencies used in the project.
 
 ## Usage
